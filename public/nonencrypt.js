@@ -41,6 +41,7 @@ $(() => {
     var arr = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
     let htmlarr = "";
     arr.forEach((element) => {
+      console.log(element);
       htmlarr += `<div class="p-2 m-1 border rounded w-full md:w-auto ${
         element["is_active"] ? "bg-green-500" : "bg-red-300"
       }">
@@ -61,7 +62,6 @@ $(() => {
               element["state"]["windowName"]
             } - ${element["state"]["windowClass"]}</div>
             </div>`;
-      console.log(element);
     });
 
     $("#clien").html(htmlarr);

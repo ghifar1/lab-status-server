@@ -55,7 +55,7 @@ $(() => {
               element["last_seen"]
             )}</div>
             <div><span class="font-medium">OS</span>: ${
-              element["state"].hasOwnProperty("os") ? element["state"]["os"] : ""
+              ("os" in element["state"]) ? element["state"]["os"] : ""
             }</div>
             <div><span class="font-medium">State</span>: ${
               element["state"]["windowName"]

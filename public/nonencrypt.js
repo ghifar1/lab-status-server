@@ -55,12 +55,12 @@ $(() => {
               Date.now(),
               element["last_seen"]
             )}</div>
-            <div><span class="font-medium">OS</span>: ${
-              ("os" in element["state"]) ? element["state"]["os"] : ""
-            }</div>
-            <div><span class="font-medium">State</span>: ${
-              element["state"]["windowName"]
-            } - ${element["state"]["windowClass"]}</div>
+            ${
+              element["state"]
+                ? `<div><span class="font-medium">OS</span>: ${element["state"]["os"]}</div>
+            <div><span class="font-medium">State</span>: ${element["state"]["windowName"]} - ${element["state"]["windowClass"]}</div>`
+                : "-"
+            }
             </div>`;
     });
 

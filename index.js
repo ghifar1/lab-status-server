@@ -63,8 +63,8 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000);
-console.log("server listen on 3000");
+httpServer.listen(3010);
+console.log("server listen on 3010");
 
 //express
 

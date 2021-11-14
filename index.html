@@ -18,66 +18,17 @@
       integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"
+      integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o="
+      crossorigin="anonymous"
+    ></script>
     <title>Document</title>
   </head>
   <body>
     <div class="mx-2 md:mx5">
-      <div id="clien" class="flex flex-wrap justify-center"></div>
+      <div id="clien" class="flex flex-wrap justify-center mt-2"></div>
     </div>
-    <script>
-      $(() => {
-        function msToTime(duration) {
-          var sec_num = parseInt(duration, 10);
-          var hours = Math.floor(sec_num / 3600);
-          var minutes = Math.floor(sec_num / 60) % 60;
-          var seconds = sec_num % 60;
-
-          if (hours < 10) hours = "0" + hours;
-          if (minutes < 10) minutes = "0" + minutes;
-          if (seconds < 10) seconds = "0" + seconds;
-
-          return hours + ":" + minutes + ":" + seconds;
-        }
-
-        function diffTime(now, past) {
-          let duration = now - past;
-          var milliseconds = Math.floor((duration % 1000) / 100),
-            seconds = Math.floor((duration / 1000) % 60),
-            minutes = Math.floor((duration / (1000 * 60)) % 60),
-            hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-          hours = hours < 10 ? "0" + hours : hours;
-          minutes = minutes < 10 ? "0" + minutes : minutes;
-          seconds = seconds < 10 ? "0" + seconds : seconds;
-
-          return hours + ":" + minutes + ":" + seconds + " ago";
-        }
-
-        const socket = io();
-        socket.on("connect", () => {
-          console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-        });
-
-        socket.on("refresh", (arr) => {
-          let htmlarr = "";
-          arr.forEach((element) => {
-            htmlarr += `<div class="p-2 m-1 border rounded w-full md:w-auto ${
-              element["is_active"] ? "bg-green-500" : "bg-red-300"
-            }">
-                <div class="text-center font-medium border-b mb-1 pb-1">${
-                  element["pc"]
-                }</div>
-                <div>Up time: ${msToTime(element["uptime"])}</div>
-                <div>Last seen : ${diffTime(
-                  Date.now(),
-                  element["last_seen"]
-                )}</div></div>`;
-            console.log(element);
-          });
-
-          $("#clien").html(htmlarr);
-        });
-      });
-    </script>
+    <script src="webs.js"></script>
   </body>
 </html>

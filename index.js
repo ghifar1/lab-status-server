@@ -1,8 +1,10 @@
 const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const CryptoJS = require("crypto-js");
 
 const app = express();
+app.use(express.static("public"));
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   /* options */
@@ -12,25 +14,28 @@ let activePC = [];
 
 io.on("connection", (socket) => {
   console.log("new socket connected");
-  io.emit("refresh", activePC);
-
+  let encrypt = CryptoJS.AES.encrypt(JSON.stringify(activePC), "wadidaw").toString();
+   io.emit("refresh", encrypt);
   socket.on("disconnect", () => {
     Object.keys(activePC).forEach((val, idx) => {
       if (activePC[idx]["socket_id"] === socket.id) {
         activePC[idx]["is_active"] = false;
       }
     });
-    socket.broadcast.emit("refresh", activePC);
+    let encrypt = CryptoJS.AES.encrypt(JSON.stringify(activePC), "wadidaw").toString();
+     socket.broadcast.emit("refresh", encrypt);
   });
 
-  socket.on("uptime-update", (uptime) => {
+  socket.on("pc-update", (data) => {
     Object.keys(activePC).forEach((val, idx) => {
       if (activePC[idx]["socket_id"] === socket.id) {
-        activePC[idx]["uptime"] = uptime;
+        activePC[idx]["uptime"] = data["uptime"];
+        activePC[idx]["state"] = data["state"];
         activePC[idx]["last_seen"] = Date.now();
       }
     });
-    socket.broadcast.emit("refresh", activePC);
+    let encrypt = CryptoJS.AES.encrypt(JSON.stringify(activePC), "wadidaw").toString();
+     socket.broadcast.emit("refresh", encrypt);
   });
 
   socket.on("active-pc", (pc) => {
@@ -54,12 +59,14 @@ io.on("connection", (socket) => {
         is_active: true,
         uptime: pc["uptime"],
         socket_id: socket.id,
-        last_seen: Date.now()
+        state: pc["state"],
+        last_seen: Date.now(),
       };
 
       activePC.push(obj);
     }
-    socket.broadcast.emit("refresh", activePC);
+    let encrypt = CryptoJS.AES.encrypt(JSON.stringify(activePC), "wadidaw").toString();
+    socket.broadcast.emit("refresh", encrypt);
   });
 });
 
@@ -69,5 +76,5 @@ console.log("server listen on 3010");
 //express
 
 app.get("/", (req, res) => {
-  res.sendFile('index.html', {root: __dirname})
+  res.sendFile("index.html", { root: __dirname });
 });
